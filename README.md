@@ -53,7 +53,7 @@ Four independent schematic blocks:
 
 ![Render 2](Images/Power_board.png)
 
-![Render 3](Images/Input_board.png)
+![Render 3](Images/Input_Board.png)
 ---
 
 ## 🔧 Applications
