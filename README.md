@@ -1,3 +1,5 @@
+![Render 1](Images/main.png)
+
 # 🌿 SprinklerBoy – Take Full Control of Your Garden, the Smart Way
 
 **SprinklerBoy** is your next-generation smart irrigation controller built around the powerful ESP32 and equipped with native Ethernet connectivity. Whether you're automating a home garden, greenhouse, or a professional irrigation system, SprinklerBoy delivers robust performance, high expandability, and complete control — right out of the box.
@@ -49,6 +51,9 @@ Four independent schematic blocks:
 
 > 🛠️ PCB ready: Designed in **EasyEDA** and optimized for **JLCPCB** assembly
 
+![Render 2](Images/Power_board.png)
+
+![Render 3](Images/Input_board.png)
 ---
 
 ## 🔧 Applications
