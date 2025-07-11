@@ -1,0 +1,1432 @@
+substitutions:
+  # Modify variables based on your settings
+  hostname: "sprinklerboy"
+  devicename: SprinklerBoy
+
+esphome:
+  name: $hostname
+  friendly_name: $devicename
+
+esp32:
+  board: esp32dev
+
+logger:
+
+ota:
+  - platform: esphome
+    password: ""
+
+web_server:
+  port: 80
+
+i2c:
+  sda: 4
+  scl: 5
+  scan: true
+  id: bus_a
+
+ethernet:
+  type: LAN8720
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk_mode: GPIO17_OUT
+  phy_addr: 0
+  power_pin: GPIO12
+  manual_ip:
+    static_ip: 192.168.1.47
+    gateway: 192.168.1.1
+    subnet: 255.255.255.0
+
+mqtt:
+  broker: 192.168.1.42
+  discovery: true
+  birth_message:
+    topic: $devicename/status
+    payload: online
+  will_message:
+    topic: $devicename/status
+    payload: offline
+
+  on_message:
+    - topic: "$devicename/Valve 1/command"
+      then:
+        - lambda: |-
+            if (x == "ON") id(valve_1).turn_on();
+            else if (x == "OFF") id(valve_1).turn_off();
+    - topic: "$devicename/Valve 2/command"
+      then:
+        - lambda: |-
+            if (x == "ON") id(valve_2).turn_on();
+            else if (x == "OFF") id(valve_2).turn_off();
+    - topic: "$devicename/Valve 3/command"
+      then:
+        - lambda: |-
+            if (x == "ON") id(valve_3).turn_on();
+            else if (x == "OFF") id(valve_3).turn_off();
+    - topic: "$devicename/Valve 4/command"
+      then:
+        - lambda: |-
+            if (x == "ON") id(valve_4).turn_on();
+            else if (x == "OFF") id(valve_4).turn_off();
+    - topic: "$devicename/Valve 5/command"
+      then:
+        - lambda: |-
+            if (x == "ON") id(valve_5).turn_on();
+            else if (x == "OFF") id(valve_5).turn_off();
+    - topic: "$devicename/Valve 6/command"
+      then:
+        - lambda: |-
+            if (x == "ON") id(valve_6).turn_on();
+            else if (x == "OFF") id(valve_6).turn_off();
+    - topic: "$devicename/Valve 7/command"
+      then:
+        - lambda: |-
+            if (x == "ON") id(valve_7).turn_on();
+            else if (x == "OFF") id(valve_7).turn_off();
+    - topic: "$devicename/Valve 8/command"
+      then:
+        - lambda: |-
+            if (x == "ON") id(valve_8).turn_on();
+            else if (x == "OFF") id(valve_8).turn_off();
+    - topic: "$devicename/Valve 1/enable"
+      then:
+        - lambda: |-
+            id(enable_valve_1) = (x == "ON");
+            ESP_LOGI("mqtt", "Valve 1 enable set to %s", x.c_str());
+    - topic: "$devicename/Valve 2/enable"
+      then:
+        - lambda: |-
+            id(enable_valve_2) = (x == "ON");
+            ESP_LOGI("mqtt", "Valve 2 enable set to %s", x.c_str());
+    - topic: "$devicename/Valve 3/enable"
+      then:
+        - lambda: |-
+            id(enable_valve_3) = (x == "ON");
+            ESP_LOGI("mqtt", "Valve 3 enable set to %s", x.c_str());
+    - topic: "$devicename/Valve 4/enable"
+      then:
+        - lambda: |-
+            id(enable_valve_4) = (x == "ON");
+            ESP_LOGI("mqtt", "Valve 4 enable set to %s", x.c_str());
+    - topic: "$devicename/Valve 5/enable"
+      then:
+        - lambda: |-
+            id(enable_valve_5) = (x == "ON");
+            ESP_LOGI("mqtt", "Valve 5 enable set to %s", x.c_str());
+    - topic: "$devicename/Valve 6/enable"
+      then:
+        - lambda: |-
+            id(enable_valve_6) = (x == "ON");
+            ESP_LOGI("mqtt", "Valve 6 enable set to %s", x.c_str());
+    - topic: "$devicename/Valve 7/enable"
+      then:
+        - lambda: |-
+            id(enable_valve_7) = (x == "ON");
+            ESP_LOGI("mqtt", "Valve 7 enable set to %s", x.c_str());
+    - topic: "$devicename/Valve 8/enable"
+      then:
+        - lambda: |-
+            id(enable_valve_8) = (x == "ON");
+            ESP_LOGI("mqtt", "Valve 8 enable set to %s", x.c_str());
+
+    - topic: "$devicename/All Valves/enable"
+      then:
+        - lambda: |-
+            bool enable = (x == "ON");
+            id(enable_valve_1) = enable;
+            id(enable_valve_2) = enable;
+            id(enable_valve_3) = enable;
+            id(enable_valve_4) = enable;
+            id(enable_valve_5) = enable;
+            id(enable_valve_6) = enable;
+            id(enable_valve_7) = enable;
+            id(enable_valve_8) = enable;
+            ESP_LOGI("mqtt", "All valves enable set to %s", x.c_str());
+
+    - topic: "$devicename/Valve 1/time"
+      then:
+        - lambda: |-
+            id(valve_1_duration_min) = atoi(x.c_str());
+    - topic: "$devicename/Valve 2/time"
+      then:
+        - lambda: |-
+            id(valve_2_duration_min) = atoi(x.c_str());
+    - topic: "$devicename/Valve 3/time"
+      then:
+        - lambda: |-
+            id(valve_3_duration_min) = atoi(x.c_str());
+    - topic: "$devicename/Valve 4/time"
+      then:
+        - lambda: |-
+            id(valve_4_duration_min) = atoi(x.c_str());
+    - topic: "$devicename/Valve 5/time"
+      then:
+        - lambda: |-
+            id(valve_5_duration_min) = atoi(x.c_str());
+    - topic: "$devicename/Valve 6/time"
+      then:
+        - lambda: |-
+            id(valve_6_duration_min) = atoi(x.c_str());
+    - topic: "$devicename/Valve 7/time"
+      then:
+        - lambda: |-
+            id(valve_7_duration_min) = atoi(x.c_str());
+    - topic: "$devicename/Valve 8/time"
+      then:
+        - lambda: |-
+            id(valve_8_duration_min) = atoi(x.c_str());
+    - topic: "$devicename/Irrigation/enable"
+      then:
+        - lambda: |-
+            id(automatic_irrigation_enabled) = (x == "ON");
+            ESP_LOGI("mqtt", "Automatic irrigation set to %s", x.c_str());
+    - topic: "$devicename/Irrigation/start"
+      then:
+        - logger.log: "MQTT START received – starting irrigation"
+        - script.execute: irrigation_cycle
+    - topic: "$devicename/Irrigation/stop"
+      then:
+        - logger.log: "MQTT STOP received – stopping irrigation immediately"
+        - script.stop: irrigation_cycle
+        - switch.turn_off: valve_1
+        - switch.turn_off: valve_2
+        - switch.turn_off: valve_3
+        - switch.turn_off: valve_4
+        - switch.turn_off: valve_5
+        - switch.turn_off: valve_6
+        - switch.turn_off: valve_7
+        - switch.turn_off: valve_8
+        - lambda: |-
+            id(remaining_seconds) = 0;
+            id(current_valve_index) = 0;
+        - mqtt.publish:
+            topic: "$devicename/Irrigation/state"
+            payload: "STOPPED"
+        - mqtt.publish:
+            topic: "$devicename/Irrigation/state"
+            payload: "IDLE"
+    - topic: "$devicename/Irrigation/Start time/hour"
+      then:
+        - lambda: |-
+            id(irrigation_start_hour) = atoi(x.c_str());
+            ESP_LOGI("mqtt", "Start hour set to %d", id(irrigation_start_hour));
+    - topic: "$devicename/Irrigation/Start time/minute"
+      then:
+        - lambda: |-
+            id(irrigation_start_minute) = atoi(x.c_str());
+            ESP_LOGI("mqtt", "Start minute set to %d", id(irrigation_start_minute));
+
+one_wire:
+  - platform: gpio
+    pin: GPIO14
+
+sensor:
+  - platform: dallas_temp
+    name: "Temperature Sensor"
+    update_interval: 60s
+    qos: 1
+    retain: true
+    availability:
+      topic: $devicename/state
+      payload_available: online
+      payload_not_available: offline
+    state_topic: $devicename/Temperature Sensor/state
+
+  - platform: ads1115
+    name: "Analog Button Level"
+    id: analog_button
+    multiplexer: 'A0_GND'
+    gain: 6.144
+    update_interval: 100ms
+    internal: true  
+
+pca9554:
+  - id: 'pca9554a_device'
+    address: 0x20
+
+pcf8574:
+  - id: 'pcf8574_hub'
+    address: 0x24
+    pcf8575: false
+
+ads1115:
+  - address: 0x48
+
+globals:
+  - id: ethernet_connected
+    type: bool
+    restore_value: false
+    initial_value: 'false'
+
+  - id: last_button_time
+    type: int
+    restore_value: false
+    initial_value: '0'
+  - id: menu_active
+    type: bool
+    restore_value: false
+    initial_value: 'false'
+  - id: display_mode
+    type: int
+    restore_value: false
+    initial_value: '1'
+
+  - id: irrigation_start_hour
+    type: int
+    restore_value: true
+    initial_value: '23'
+  - id: irrigation_start_minute
+    type: int
+    restore_value: true
+    initial_value: '0'
+  - id: current_valve_index
+    type: int
+    restore_value: false
+    initial_value: '0'
+  - id: remaining_seconds
+    type: int
+    restore_value: false
+    initial_value: '0'
+  - id: enable_valve_1
+    type: bool
+    restore_value: true
+    initial_value: 'false'
+  - id: enable_valve_2
+    type: bool
+    restore_value: true
+    initial_value: 'false'
+  - id: enable_valve_3
+    type: bool
+    restore_value: true
+    initial_value: 'false'
+  - id: enable_valve_4
+    type: bool
+    restore_value: true
+    initial_value: 'false'
+  - id: enable_valve_5
+    type: bool
+    restore_value: true
+    initial_value: 'false'
+  - id: enable_valve_6
+    type: bool
+    restore_value: true
+    initial_value: 'false'
+  - id: enable_valve_7
+    type: bool
+    restore_value: true
+    initial_value: 'false'
+  - id: enable_valve_8
+    type: bool
+    restore_value: true
+    initial_value: 'false'
+
+  - id: valve_1_duration_min
+    type: int
+    restore_value: true
+    initial_value: '1'  # default 1 minute
+  - id: valve_2_duration_min
+    type: int
+    restore_value: true
+    initial_value: '1'
+  - id: valve_3_duration_min
+    type: int
+    restore_value: true
+    initial_value: '1'
+  - id: valve_4_duration_min
+    type: int
+    restore_value: true
+    initial_value: '1'
+  - id: valve_5_duration_min
+    type: int
+    restore_value: true
+    initial_value: '1'
+  - id: valve_6_duration_min
+    type: int
+    restore_value: true
+    initial_value: '1'
+  - id: valve_7_duration_min
+    type: int
+    restore_value: true
+    initial_value: '1'
+  - id: valve_8_duration_min
+    type: int
+    restore_value: true
+    initial_value: '1'
+  - id: automatic_irrigation_enabled
+    type: bool
+    restore_value: true
+    initial_value: 'false'
+
+  - id: last_pub_button_valve_1
+    type: bool
+    restore_value: false
+    initial_value: "false"
+  - id: last_pub_button_valve_2
+    type: bool
+    restore_value: false
+    initial_value: "false"
+  - id: last_pub_button_valve_3
+    type: bool
+    restore_value: false
+    initial_value: "false"
+  - id: last_pub_button_valve_4
+    type: bool
+    restore_value: false
+    initial_value: "false"
+  - id: last_pub_button_valve_5
+    type: bool
+    restore_value: false
+    initial_value: "false"
+  - id: last_pub_button_valve_6
+    type: bool
+    restore_value: false
+    initial_value: "false"
+  - id: last_pub_button_valve_7
+    type: bool
+    restore_value: false
+    initial_value: "false"
+  - id: last_pub_button_valve_8
+    type: bool
+    restore_value: false
+    initial_value: "false"
+  - id: menu_index
+    type: int
+    restore_value: false
+    initial_value: '0'
+  - id: menu_edit_mode
+    type: bool
+    restore_value: false
+    initial_value: 'false'
+  - id: day_schedule_monday
+    type: bool
+    restore_value: true
+    initial_value: 'true'
+  - id: day_schedule_tuesday
+    type: bool
+    restore_value: true
+    initial_value: 'true'
+  - id: day_schedule_wednesday
+    type: bool
+    restore_value: true
+    initial_value: 'true'
+  - id: day_schedule_thursday
+    type: bool
+    restore_value: true
+    initial_value: 'true'
+  - id: day_schedule_friday
+    type: bool
+    restore_value: true
+    initial_value: 'true'
+  - id: day_schedule_saturday
+    type: bool
+    restore_value: true
+    initial_value: 'true'
+  - id: day_schedule_sunday
+    type: bool
+    restore_value: true
+    initial_value: 'true'
+  - id: valve_select_index
+    type: int
+    restore_value: false
+    initial_value: '0'
+  - id: rain_sensor_override
+    type: bool
+    restore_value: true
+    initial_value: "false"
+
+switch:
+  - platform: gpio
+    name: "Valve 1"
+    id: valve_1
+    pin:
+      pca9554: pca9554a_device
+      number: 0
+      mode: OUTPUT
+      inverted: false
+    restore_mode: RESTORE_DEFAULT_OFF
+    on_turn_on:
+      - mqtt.publish:
+          topic: "$devicename/Valve 1/state"
+          payload: "ON"
+    on_turn_off:
+      - mqtt.publish:
+          topic: "$devicename/Valve 1/state"
+          payload: "OFF"
+
+  - platform: gpio
+    name: "Valve 2"
+    id: valve_2
+    pin:
+      pca9554: pca9554a_device
+      number: 1
+      mode: OUTPUT
+      inverted: false
+    restore_mode: RESTORE_DEFAULT_OFF
+    on_turn_on:
+      - mqtt.publish:
+          topic: "$devicename/Valve 2/state"
+          payload: "ON"
+    on_turn_off:
+      - mqtt.publish:
+          topic: "$devicename/Valve 2/state"
+          payload: "OFF"
+
+  - platform: gpio
+    name: "Valve 3"
+    id: valve_3
+    pin:
+      pca9554: pca9554a_device
+      number: 2
+      mode: OUTPUT
+      inverted: false
+    restore_mode: RESTORE_DEFAULT_OFF
+    on_turn_on:
+      - mqtt.publish:
+          topic: "$devicename/Valve 3/state"
+          payload: "ON"
+    on_turn_off:
+      - mqtt.publish:
+          topic: "$devicename/Valve 3/state"
+          payload: "OFF"
+
+  - platform: gpio
+    name: "Valve 4"
+    id: valve_4
+    pin:
+      pca9554: pca9554a_device
+      number: 3
+      mode: OUTPUT
+      inverted: false
+    restore_mode: RESTORE_DEFAULT_OFF
+    on_turn_on:
+      - mqtt.publish:
+          topic: "$devicename/Valve 4/state"
+          payload: "ON"
+    on_turn_off:
+      - mqtt.publish:
+          topic: "$devicename/Valve 4/state"
+          payload: "OFF"
+
+  - platform: gpio
+    name: "Valve 5"
+    id: valve_5
+    pin:
+      pca9554: pca9554a_device
+      number: 4
+      mode: OUTPUT
+      inverted: false
+    restore_mode: RESTORE_DEFAULT_OFF
+    on_turn_on:
+      - mqtt.publish:
+          topic: "$devicename/Valve 5/state"
+          payload: "ON"
+    on_turn_off:
+      - mqtt.publish:
+          topic: "$devicename/Valve 5/state"
+          payload: "OFF"
+
+  - platform: gpio
+    name: "Valve 6"
+    id: valve_6
+    pin:
+      pca9554: pca9554a_device
+      number: 5
+      mode: OUTPUT
+      inverted: false
+    restore_mode: RESTORE_DEFAULT_OFF
+    on_turn_on:
+      - mqtt.publish:
+          topic: "$devicename/Valve 6/state"
+          payload: "ON"
+    on_turn_off:
+      - mqtt.publish:
+          topic: "$devicename/Valve 6/state"
+          payload: "OFF"
+
+  - platform: gpio
+    name: "Valve 7"
+    id: valve_7
+    pin:
+      pca9554: pca9554a_device
+      number: 6
+      mode: OUTPUT
+      inverted: false
+    restore_mode: RESTORE_DEFAULT_OFF
+    on_turn_on:
+      - mqtt.publish:
+          topic: "$devicename/Valve 7/state"
+          payload: "ON"
+    on_turn_off:
+      - mqtt.publish:
+          topic: "$devicename/Valve 7/state"
+          payload: "OFF"
+
+  - platform: gpio
+    name: "Valve 8"
+    id: valve_8
+    pin:
+      pca9554: pca9554a_device
+      number: 7
+      mode: OUTPUT
+      inverted: false
+    restore_mode: RESTORE_DEFAULT_OFF
+    on_turn_on:
+      - mqtt.publish:
+          topic: "$devicename/Valve 8/state"
+          payload: "ON"
+    on_turn_off:
+      - mqtt.publish:
+          topic: "$devicename/Valve 8/state"
+          payload: "OFF"
+
+binary_sensor:
+  - platform: status
+    name: "ESP Connected"
+    id: esp_connected
+    on_press:
+      then:
+        - lambda: 'id(ethernet_connected) = true;'
+    on_release:
+      then:
+        - lambda: 'id(ethernet_connected) = false;'
+  
+  - platform: gpio
+    id: rain_sensor
+    pin:
+      number: GPIO13
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Rain Sensor"
+
+  - platform: template
+    name: "Button UP"
+    id: button_up
+    lambda: 'return (id(analog_button).state > 0.1 && id(analog_button).state < 0.3);'
+    on_press:
+      then:
+        - script.execute: reset_inactivity_timer
+        - lambda: |-
+            if (id(display_mode) != 2 || !id(menu_edit_mode)) return;
+
+            switch (id(menu_index)) {
+
+              // Valve Time
+              case 1:
+                id(valve_1_duration_min) += 1;
+                break;
+
+              // Start Time
+              case 2:
+                if (id(valve_select_index) == 0)
+                  id(irrigation_start_hour) = (id(irrigation_start_hour) + 1) % 24;
+                else
+                  id(irrigation_start_minute) = (id(irrigation_start_minute) + 1) % 60;
+                break;
+
+              // Day Schedule
+              case 3:
+                switch (id(valve_select_index)) {
+                  case 0: id(day_schedule_monday) = !id(day_schedule_monday); break;
+                  case 1: id(day_schedule_tuesday) = !id(day_schedule_tuesday); break;
+                  case 2: id(day_schedule_wednesday) = !id(day_schedule_wednesday); break;
+                  case 3: id(day_schedule_thursday) = !id(day_schedule_thursday); break;
+                  case 4: id(day_schedule_friday) = !id(day_schedule_friday); break;
+                  case 5: id(day_schedule_saturday) = !id(day_schedule_saturday); break;
+                  case 6: id(day_schedule_sunday) = !id(day_schedule_sunday); break;
+                }
+                break;
+
+              case 4:  // Rain Sensor override
+                if (id(valve_select_index) == 0)
+                  id(rain_sensor_override) = !id(rain_sensor_override);
+                break;
+
+              // System toggle
+              case 5:
+                id(automatic_irrigation_enabled) = !id(automatic_irrigation_enabled);
+                break;
+            }
+
+  - platform: template
+    name: "Button DOWN"
+    id: button_down
+    lambda: 'return (id(analog_button).state > 0.8 && id(analog_button).state < 1.2);'
+    on_press:
+      then:
+        - script.execute: reset_inactivity_timer
+        - lambda: |-
+            if (id(display_mode) != 2) return;
+
+            if (!id(menu_edit_mode)) {
+              id(menu_edit_mode) = true;
+              id(valve_select_index) = 0;
+              return;
+            }
+
+            switch (id(menu_index)) {
+
+              // Valve Time
+              case 1: 
+                switch (id(valve_select_index)) {
+                  case 0: if (id(valve_1_duration_min) > 0) id(valve_1_duration_min)--; break;
+                  case 1: if (id(valve_2_duration_min) > 0) id(valve_2_duration_min)--; break;
+                  case 2: if (id(valve_3_duration_min) > 0) id(valve_3_duration_min)--; break;
+                  case 3: if (id(valve_4_duration_min) > 0) id(valve_4_duration_min)--; break;
+                  case 4: if (id(valve_5_duration_min) > 0) id(valve_5_duration_min)--; break;
+                  case 5: if (id(valve_6_duration_min) > 0) id(valve_6_duration_min)--; break;
+                  case 6: if (id(valve_7_duration_min) > 0) id(valve_7_duration_min)--; break;
+                  case 7: if (id(valve_8_duration_min) > 0) id(valve_8_duration_min)--; break;
+                }
+                break;
+
+              // Start Time
+              case 2:
+                if (id(valve_select_index) == 0)
+                  id(irrigation_start_hour) = (id(irrigation_start_hour) + 23) % 24;
+                else
+                  id(irrigation_start_minute) = (id(irrigation_start_minute) + 59) % 60;
+                break;
+
+              // Day Schedule
+              case 3:
+                switch (id(valve_select_index)) {
+                  case 0: id(day_schedule_monday) = !id(day_schedule_monday); break;
+                  case 1: id(day_schedule_tuesday) = !id(day_schedule_tuesday); break;
+                  case 2: id(day_schedule_wednesday) = !id(day_schedule_wednesday); break;
+                  case 3: id(day_schedule_thursday) = !id(day_schedule_thursday); break;
+                  case 4: id(day_schedule_friday) = !id(day_schedule_friday); break;
+                  case 5: id(day_schedule_saturday) = !id(day_schedule_saturday); break;
+                  case 6: id(day_schedule_sunday) = !id(day_schedule_sunday); break;
+                }
+                break;
+
+              case 4:  // Rain Sensor override
+                if (id(valve_select_index) == 0)
+                  id(rain_sensor_override) = !id(rain_sensor_override);
+                break;
+
+              // System toggle
+              case 5:
+                id(automatic_irrigation_enabled) = !id(automatic_irrigation_enabled);
+                break;
+            }
+
+  - platform: template
+    name: "Button OK"
+    id: button_ok
+    lambda: 'return (id(analog_button).state > 1.8 && id(analog_button).state < 2.2);'
+    on_press:
+      then:
+        - script.execute: reset_inactivity_timer
+        - lambda: |-
+            if (id(remaining_seconds) > 0 && id(display_mode) == 1) {
+              id(display_mode) = 2;  // Vai direttamente al menu
+              return;
+            }
+            if (id(display_mode) == 1) {
+              id(display_mode) = 2;
+              id(menu_index) = 0;
+              id(menu_edit_mode) = false;
+              id(menu_active) = true;
+            } else if (id(display_mode) == 2) {
+
+              // Menu Active Valve
+              if (id(menu_index) == 0) {
+                if (!id(menu_edit_mode)) {
+                  id(menu_edit_mode) = true;
+                  id(valve_select_index) = 1;
+                } else {
+                  switch (id(valve_select_index)) {
+                    case 1: id(valve_1).toggle(); break;
+                    case 2: id(valve_2).toggle(); break;
+                    case 3: id(valve_3).toggle(); break;
+                    case 4: id(valve_4).toggle(); break;
+                    case 5: id(valve_5).toggle(); break;
+                    case 6: id(valve_6).toggle(); break;
+                    case 7: id(valve_7).toggle(); break;
+                    case 8: id(valve_8).toggle(); break;
+                  }
+                  id(valve_select_index)++;
+                  if (id(valve_select_index) > 8) {
+                    id(valve_select_index) = 0;
+                    id(menu_edit_mode) = false;
+                    id(menu_index) = 1;
+                  }
+                }
+                return;
+              }
+
+              // Menu Day Schedule
+              if (id(menu_index) == 3) {
+                if (!id(menu_edit_mode)) {
+                  id(menu_edit_mode) = true;
+                  id(valve_select_index) = 0;
+                } else {
+                  id(valve_select_index)++;
+                  if (id(valve_select_index) > 6) {
+                    id(valve_select_index) = 0;
+                    id(menu_edit_mode) = false;
+                    id(menu_index) = 4;
+                  }
+                }
+                return;
+              }
+
+              // Altri menu
+              if (id(menu_edit_mode)) {
+                id(menu_edit_mode) = false;
+                id(menu_index) = (id(menu_index) + 1) % 6;
+              } else {
+                id(menu_index) = (id(menu_index) + 1) % 6;
+              }
+            }
+
+  - platform: gpio
+    name: "Valve 1 Button"
+    id: button_valve_1
+    pin:
+      pcf8574: pcf8574_hub
+      number: 0
+      mode: INPUT
+      inverted: true
+    on_press:
+      then:
+        - lambda: |-
+            if (id(enable_valve_1)) {
+              id(valve_1).toggle();
+              ESP_LOGI("manual", "Valve 1 toggled by button");
+            } else {
+              ESP_LOGW("manual", "Valve 1 blocked by control variable");
+            }
+        - mqtt.publish:
+            topic: "$devicename/Valve 1/button"
+            payload: "PRESSED"
+    on_release:
+      then:
+        - mqtt.publish:
+            topic: "$devicename/Valve 1/button"
+            payload: "RELEASED"
+
+  - platform: gpio
+    name: "Valve 2 Button"
+    id: button_valve_2
+    pin:
+      pcf8574: pcf8574_hub
+      number: 1
+      mode: INPUT
+      inverted: true
+    on_press:
+      then:
+        - lambda: |-
+            if (id(enable_valve_2)) {
+              id(valve_2).toggle();
+              ESP_LOGI("manual", "Valve 2 toggled by button");
+            } else {
+              ESP_LOGW("manual", "Valve 2 blocked by control variable");
+            }
+        - mqtt.publish:
+            topic: "$devicename/Valve 2/button"
+            payload: "PRESSED"
+    on_release:
+      then:
+        - mqtt.publish:
+            topic: "$devicename/Valve 2/button"
+            payload: "RELEASED"
+
+  - platform: gpio
+    name: "Valve 3 Button"
+    id: button_valve_3
+    pin:
+      pcf8574: pcf8574_hub
+      number: 2
+      mode: INPUT
+      inverted: true
+    on_press:
+      then:
+        - lambda: |-
+            if (id(enable_valve_3)) {
+              id(valve_3).toggle();
+              ESP_LOGI("manual", "Valve 3 toggled by button");
+            } else {
+              ESP_LOGW("manual", "Valve 3 blocked by control variable");
+            }
+        - mqtt.publish:
+            topic: "$devicename/Valve 3/button"
+            payload: "PRESSED"
+    on_release:
+      then:
+        - mqtt.publish:
+            topic: "$devicename/Valve 3/button"
+            payload: "RELEASED"
+
+  - platform: gpio
+    name: "Valve 4 Button"
+    id: button_valve_4
+    pin:
+      pcf8574: pcf8574_hub
+      number: 3
+      mode: INPUT
+      inverted: true
+    on_press:
+      then:
+        - lambda: |-
+            if (id(enable_valve_4)) {
+              id(valve_4).toggle();
+              ESP_LOGI("manual", "Valve 4 toggled by button");
+            } else {
+              ESP_LOGW("manual", "Valve 4 blocked by control variable");
+            }
+        - mqtt.publish:
+            topic: "$devicename/Valve 4/button"
+            payload: "PRESSED"
+    on_release:
+      then:
+        - mqtt.publish:
+            topic: "$devicename/Valve 4/button"
+            payload: "RELEASED"
+
+  - platform: gpio
+    name: "Valve 5 Button"
+    id: button_valve_5
+    pin:
+      pcf8574: pcf8574_hub
+      number: 4
+      mode: INPUT
+      inverted: true
+    on_press:
+      then:
+        - lambda: |-
+            if (id(enable_valve_5)) {
+              id(valve_5).toggle();
+              ESP_LOGI("manual", "Valve 5 toggled by button");
+            } else {
+              ESP_LOGW("manual", "Valve 5 blocked by control variable");
+            }
+        - mqtt.publish:
+            topic: "$devicename/Valve 5/button"
+            payload: "PRESSED"
+    on_release:
+      then:
+        - mqtt.publish:
+            topic: "$devicename/Valve 5/button"
+            payload: "RELEASED"
+
+  - platform: gpio
+    name: "Valve 6 Button"
+    id: button_valve_6
+    pin:
+      pcf8574: pcf8574_hub
+      number: 5
+      mode: INPUT
+      inverted: true
+    on_press:
+      then:
+        - lambda: |-
+            if (id(enable_valve_6)) {
+              id(valve_6).toggle();
+              ESP_LOGI("manual", "Valve 6 toggled by button");
+            } else {
+              ESP_LOGW("manual", "Valve 6 blocked by control variable");
+            }
+        - mqtt.publish:
+            topic: "$devicename/Valve 6/button"
+            payload: "PRESSED"
+    on_release:
+      then:
+        - mqtt.publish:
+            topic: "$devicename/Valve 6/button"
+            payload: "RELEASED"
+
+  - platform: gpio
+    name: "Valve 7 Button"
+    id: button_valve_7
+    pin:
+      pcf8574: pcf8574_hub
+      number: 6
+      mode: INPUT
+      inverted: true
+    on_press:
+      then:
+        - lambda: |-
+            if (id(enable_valve_7)) {
+              id(valve_7).toggle();
+              ESP_LOGI("manual", "Valve 7 toggled by button");
+            } else {
+              ESP_LOGW("manual", "Valve 7 blocked by control variable");
+            }
+        - mqtt.publish:
+            topic: "$devicename/Valve 7/button"
+            payload: "PRESSED"
+    on_release:
+      then:
+        - mqtt.publish:
+            topic: "$devicename/Valve 7/button"
+            payload: "RELEASED"
+
+  - platform: gpio
+    name: "Valve 8 Button"
+    id: button_valve_8
+    pin:
+      pcf8574: pcf8574_hub
+      number: 7
+      mode: INPUT
+      inverted: true
+    on_press:
+      then:
+        - lambda: |-
+            if (id(enable_valve_8)) {
+              id(valve_8).toggle();
+              ESP_LOGI("manual", "Valve 8 toggled by button");
+            } else {
+              ESP_LOGW("manual", "Valve 8 blocked by control variable");
+            }
+        - mqtt.publish:
+            topic: "$devicename/Valve 8/button"
+            payload: "PRESSED"
+    on_release:
+      then:
+        - mqtt.publish:
+            topic: "$devicename/Valve 8/button"
+            payload: "RELEASED"
+
+script:
+  - id: irrigation_cycle
+    then:
+      - mqtt.publish:
+          topic: "$devicename/Irrigation/state"
+          payload: "RUNNING"
+      - lambda: |-
+          id(current_valve_index) = 1;
+          id(irrigation_step).execute();
+
+  - id: irrigation_step
+    then:
+      - lambda: |-
+          if (!id(automatic_irrigation_enabled)) {
+            ESP_LOGW("irrigation", "Cycle interrupted manually.");
+            id(irrigation_cycle).stop();
+            mqtt::global_mqtt_client->publish("$devicename/Irrigation/state", "STOPPED");
+            mqtt::global_mqtt_client->publish("$devicename/Irrigation/state", "IDLE");
+            return;
+          }
+          if (id(current_valve_index) > 8) {
+            ESP_LOGI("irrigation", "Irrigation cycle completed.");
+            mqtt::global_mqtt_client->publish("$devicename/Irrigation/state", "IDLE");
+            return;
+          }
+          bool enabled = false;
+          int duration = 0;
+          switch (id(current_valve_index)) {
+            case 1: enabled = id(enable_valve_1); duration = id(valve_1_duration_min); break;
+            case 2: enabled = id(enable_valve_2); duration = id(valve_2_duration_min); break;
+            case 3: enabled = id(enable_valve_3); duration = id(valve_3_duration_min); break;
+            case 4: enabled = id(enable_valve_4); duration = id(valve_4_duration_min); break;
+            case 5: enabled = id(enable_valve_5); duration = id(valve_5_duration_min); break;
+            case 6: enabled = id(enable_valve_6); duration = id(valve_6_duration_min); break;
+            case 7: enabled = id(enable_valve_7); duration = id(valve_7_duration_min); break;
+            case 8: enabled = id(enable_valve_8); duration = id(valve_8_duration_min); break;
+          }
+          if (!enabled || duration <= 0 || (id(rain_sensor).state && !id(rain_sensor_override))) {
+            if (id(rain_sensor).state && !id(rain_sensor_override)) {
+              ESP_LOGI("irrigation", "Valve %d skipped due to rain.", id(current_valve_index));
+            } else {
+              ESP_LOGI("irrigation", "Valve %d skipped.", id(current_valve_index));
+            }
+            id(current_valve_index) += 1;
+            id(irrigation_step).execute();
+            return;
+          }
+          ESP_LOGI("irrigation", "Valve %d ON for %d minutes", id(current_valve_index), duration);
+          switch (id(current_valve_index)) {
+            case 1: id(valve_1).turn_on(); break;
+            case 2: id(valve_2).turn_on(); break;
+            case 3: id(valve_3).turn_on(); break;
+            case 4: id(valve_4).turn_on(); break;
+            case 5: id(valve_5).turn_on(); break;
+            case 6: id(valve_6).turn_on(); break;
+            case 7: id(valve_7).turn_on(); break;
+            case 8: id(valve_8).turn_on(); break;
+          }
+          id(remaining_seconds) = duration * 60;
+
+  - id: reset_inactivity_timer
+    then:
+      - lambda: 'id(last_button_time) = millis() / 1000;'
+
+interval:
+  - interval: 1s
+    then:
+      - lambda: |-
+          if (id(remaining_seconds) > 0 && id(automatic_irrigation_enabled)) {
+            id(remaining_seconds)--;
+            return;
+          }
+      - lambda: |-
+          if (id(remaining_seconds) == 0) {
+            switch (id(current_valve_index)) {
+              case 1: id(valve_1).turn_off(); break;
+              case 2: id(valve_2).turn_off(); break;
+              case 3: id(valve_3).turn_off(); break;
+              case 4: id(valve_4).turn_off(); break;
+              case 5: id(valve_5).turn_off(); break;
+              case 6: id(valve_6).turn_off(); break;
+              case 7: id(valve_7).turn_off(); break;
+              case 8: id(valve_8).turn_off(); break;
+            }
+            id(current_valve_index) += 1;
+          }
+      - delay: 5s
+      - script.execute: irrigation_step
+
+      - lambda: |-
+          if ((millis() / 1000) - id(last_button_time) > 30 && !id(menu_active)) {
+            id(display_mode) = 1;  // standby screen
+          }
+
+  - interval: 10s
+    then:
+      - lambda: |-
+          if (!mqtt::global_mqtt_client->is_connected()) return;
+
+          bool s;
+
+          s = id(button_valve_1).state;
+          if (s != id(last_pub_button_valve_1)) {
+            id(button_valve_1).publish_state(s);
+            id(last_pub_button_valve_1) = s;
+          }
+
+          s = id(button_valve_2).state;
+          if (s != id(last_pub_button_valve_2)) {
+            id(button_valve_2).publish_state(s);
+            id(last_pub_button_valve_2) = s;
+          }
+
+          s = id(button_valve_3).state;
+          if (s != id(last_pub_button_valve_3)) {
+            id(button_valve_3).publish_state(s);
+            id(last_pub_button_valve_3) = s;
+          }
+
+          s = id(button_valve_4).state;
+          if (s != id(last_pub_button_valve_4)) {
+            id(button_valve_4).publish_state(s);
+            id(last_pub_button_valve_4) = s;
+          }
+
+          s = id(button_valve_5).state;
+          if (s != id(last_pub_button_valve_5)) {
+            id(button_valve_5).publish_state(s);
+            id(last_pub_button_valve_5) = s;
+          }
+
+          s = id(button_valve_6).state;
+          if (s != id(last_pub_button_valve_6)) {
+            id(button_valve_6).publish_state(s);
+            id(last_pub_button_valve_6) = s;
+          }
+
+          s = id(button_valve_7).state;
+          if (s != id(last_pub_button_valve_7)) {
+            id(button_valve_7).publish_state(s);
+            id(last_pub_button_valve_7) = s;
+          }
+
+          s = id(button_valve_8).state;
+          if (s != id(last_pub_button_valve_8)) {
+            id(button_valve_8).publish_state(s);
+            id(last_pub_button_valve_8) = s;
+          }
+
+  - interval: 60s
+    then:
+      - lambda: |-
+          auto time = id(sntp_time).now();
+          if (!time.is_valid()) return;
+
+          if (id(rain_sensor).state && !id(rain_sensor_override)) {
+            ESP_LOGI("irrigation", "Start blocked due to rain.");
+            return;
+          }
+
+          if (time.hour == id(irrigation_start_hour) &&
+              time.minute == id(irrigation_start_minute)) {
+            ESP_LOGI("irrigation", "Scheduled irrigation start at %02d:%02d", id(irrigation_start_hour), id(irrigation_start_minute));
+            id(irrigation_cycle).execute();
+          }
+
+
+time:
+  - platform: sntp
+    id: sntp_time
+    on_time:
+      - seconds: 0
+        minutes: /1
+        then:
+          - lambda: |-
+              if (id(sntp_time).now().is_valid()) {
+                char buffer[16];
+                auto t = id(sntp_time).now();
+                sprintf(buffer, "%02d:%02d", t.hour, t.minute);
+                mqtt::global_mqtt_client->publish("$devicename/Irrigation/time", buffer);
+              }
+
+text_sensor:
+  - platform: template
+    name: "Irrigation Status"
+    id: irrigation_status
+    lambda: |-
+      return {"IDLE"};
+
+font:
+  - file: "arial.ttf"
+    id: font_small
+    size: 8
+  - file: "arial.ttf"
+    id: font_large
+    size: 16 
+
+image:
+  - file: "sprinklerboy_logo.bmp"
+    id: sprinklerboy_logo
+    type: BINARY
+  - file: "sprinkler_icon_0.bmp"
+    id: sprinkler_frame_0
+    type: BINARY
+    resize: 32x32
+  - file: "sprinkler_icon_1.bmp"
+    id: sprinkler_frame_1
+    type: BINARY
+    resize: 32x32
+  - file: "sprinkler_icon_2.bmp"
+    id: sprinkler_frame_2
+    type: BINARY
+    resize: 32x32
+
+display:
+  - platform: ssd1306_i2c
+    model: "SSD1306 128x64"
+    address: 0x3C
+    id: oled_display
+    update_interval: 1s
+    lambda: |-
+      static int startup_counter = 0;
+      if (startup_counter < 50) {
+        it.image(32, 0, id(sprinklerboy_logo));
+        startup_counter++;
+        return;
+      }
+
+      if (id(automatic_irrigation_enabled) && id(remaining_seconds) > 0 && id(display_mode) == 1) {
+        // Animazione sprinkler
+        static int frame = 0;
+        static uint32_t last_frame_time = 0;
+        if (millis() - last_frame_time > 300) {
+          frame = (frame + 1) % 3;
+          last_frame_time = millis();
+        }
+
+        it.printf(64, 0, id(font_small), TextAlign::TOP_CENTER, "IRRIGATING");
+
+        // Disegna il frame corrente dell’animazione sprinkler
+        if (frame == 0) it.image(48, 8, id(sprinkler_frame_0));
+        else if (frame == 1) it.image(48, 8, id(sprinkler_frame_1));
+        else it.image(48, 8, id(sprinkler_frame_2));
+
+        // Countdown con nome valvola
+        char buf[32];
+        snprintf(buf, sizeof(buf), "Valve %d: %d min %02d s",
+                id(current_valve_index),
+                id(remaining_seconds) / 60,
+                id(remaining_seconds) % 60);
+        it.printf(64, 46, id(font_small), TextAlign::TOP_CENTER, "%s", buf);
+
+        return;
+      }
+
+      if (id(display_mode) == 2) {
+        switch (id(menu_index)) {
+
+          case 0: {
+            const bool blink = (millis() / 500) % 2 == 0;
+            it.printf(64, 0, id(font_small), TextAlign::TOP_CENTER, "Active Valve");
+
+            auto print_valve = [&](int col, int row, int index, bool state) {
+              char label[8];
+              snprintf(label, sizeof(label), "V%d:%s", index + 1, state ? "ON" : "OFF");
+
+              // Se in modalità modifica e questa è la valvola selezionata
+              if (id(menu_edit_mode) && id(valve_select_index) == index) {
+                if (blink) {
+                  it.printf(col, row, id(font_small), TextAlign::TOP_CENTER, "%s", label);
+                }
+                // Frecce sopra e sotto
+                it.printf(col, row - 10, id(font_small), TextAlign::TOP_CENTER, "↑");
+                it.printf(col, row + 10, id(font_small), TextAlign::TOP_CENTER, "↓");
+              } else {
+                // Modalità normale
+                it.printf(col, row, id(font_small), TextAlign::TOP_CENTER, "%s", label);
+              }
+            };
+
+            // Riga 1
+            print_valve(24, 12, 0, id(valve_1).state);
+            print_valve(64, 12, 1, id(valve_2).state);
+            print_valve(104, 12, 2, id(valve_3).state);
+            print_valve(144, 12, 3, id(valve_4).state);
+
+            // Riga 2
+            print_valve(24, 28, 4, id(valve_5).state);
+            print_valve(64, 28, 5, id(valve_6).state);
+            print_valve(104, 28, 6, id(valve_7).state);
+            print_valve(144, 28, 7, id(valve_8).state);
+
+            if (!id(menu_edit_mode)) {
+              it.printf(64, 48, id(font_small), TextAlign::TOP_CENTER, "Premi OK per selez.");
+            }
+
+            break;
+          }
+          case 1: {
+            const bool blink = (millis() / 500) % 2 == 0;
+            it.printf(64, 0, id(font_small), TextAlign::TOP_CENTER, "Valve Time");
+
+            auto print_time = [&](int col, int row, int valve_idx, int value) {
+              if (!(id(menu_edit_mode) && id(valve_select_index) == valve_idx && !blink)) {
+                it.printf(col, row, id(font_small), TextAlign::TOP_CENTER, "T%d:%d", valve_idx + 1, value);
+              }
+
+              if (id(menu_edit_mode) && id(valve_select_index) == valve_idx) {
+                it.printf(col, row - 10, id(font_small), TextAlign::TOP_CENTER, "↑");
+                it.printf(col, row + 10, id(font_small), TextAlign::TOP_CENTER, "↓");
+              }
+            };
+
+            print_time(20, 12, 0, id(valve_1_duration_min));
+            print_time(54, 12, 1, id(valve_2_duration_min));
+            print_time(92, 12, 2, id(valve_3_duration_min));
+            print_time(126, 12, 3, id(valve_4_duration_min));
+
+            print_time(20, 30, 4, id(valve_5_duration_min));
+            print_time(54, 30, 5, id(valve_6_duration_min));
+            print_time(92, 30, 6, id(valve_7_duration_min));
+            print_time(126, 30, 7, id(valve_8_duration_min));
+
+            break;
+          }
+          case 2: {
+            const bool blink = (millis() / 500) % 2 == 0;
+
+            it.printf(64, 0, id(font_small), TextAlign::TOP_CENTER, "Start Time");
+
+            if (!(id(menu_edit_mode) && id(valve_select_index) == 0 && !blink)) {
+              char buffer[3];
+              snprintf(buffer, sizeof(buffer), "%02d", id(irrigation_start_hour));
+              it.printf(32, 24, id(font_small), TextAlign::TOP_CENTER, "%s", buffer);
+            }
+
+            if (!(id(menu_edit_mode) && id(valve_select_index) == 1 && !blink)) {
+              char buffer[3];
+              snprintf(buffer, sizeof(buffer), "%02d", id(irrigation_start_minute));
+              it.printf(96, 24, id(font_small), TextAlign::TOP_CENTER, "%s", buffer);
+            }
+
+            it.printf(64, 24, id(font_small), TextAlign::TOP_CENTER, ":");
+
+            if (id(menu_edit_mode) && id(valve_select_index) == 0) {
+              it.printf(32, 10, id(font_small), TextAlign::TOP_CENTER, "↑");
+              it.printf(32, 38, id(font_small), TextAlign::TOP_CENTER, "↓");
+            }
+
+            if (id(menu_edit_mode) && id(valve_select_index) == 1) {
+              it.printf(96, 10, id(font_small), TextAlign::TOP_CENTER, "↑");
+              it.printf(96, 38, id(font_small), TextAlign::TOP_CENTER, "↓");
+            }
+            break;
+          }
+
+          case 3: {
+            const bool blink = (millis() / 500) % 2 == 0;
+
+            auto print_day = [&](int col, int row, const char *abbr, bool enabled, int index) {
+              if (id(menu_edit_mode) && id(valve_select_index) == index && !blink) return;
+
+              it.printf(col, row, id(font_small), TextAlign::TOP_LEFT, "%s:%s", abbr, enabled ? "✔" : "✘");
+
+              if (id(menu_edit_mode) && id(valve_select_index) == index) {
+                it.printf(col - 6, row - 7, id(font_small), TextAlign::TOP_LEFT, "↑");
+                it.printf(col - 6, row + 7, id(font_small), TextAlign::TOP_LEFT, "↓");
+              }
+            };
+
+            it.printf(64, 0, id(font_small), TextAlign::TOP_CENTER, "Day Schedule");
+
+            print_day(6, 12, "Mo", id(day_schedule_monday), 0);
+            print_day(46, 12, "Tu", id(day_schedule_tuesday), 1);
+            print_day(86, 12, "We", id(day_schedule_wednesday), 2);
+
+            print_day(6, 26, "Th", id(day_schedule_thursday), 3);
+            print_day(46, 26, "Fr", id(day_schedule_friday), 4);
+            print_day(86, 26, "Sa", id(day_schedule_saturday), 5);
+
+            print_day(46, 40, "Su", id(day_schedule_sunday), 6);
+            break;
+          }
+
+          case 4: {
+            const bool blink = (millis() / 500) % 2 == 0;
+
+            it.printf(64, 0, id(font_small), TextAlign::TOP_CENTER, "Rain Sensor");
+
+            const char *status =
+              id(rain_sensor).state
+                ? (id(rain_sensor_override) ? "RAIN (Bypass)" : "RAIN")
+                : (id(rain_sensor_override) ? "CLEAR (Bypass)" : "CLEAR");
+
+            if (!(id(menu_edit_mode) && id(valve_select_index) == 0 && !blink)) {
+              it.printf(64, 24, id(font_small), TextAlign::TOP_CENTER, "%s", status);
+            }
+
+            if (id(menu_edit_mode) && id(valve_select_index) == 0) {
+              it.printf(64, 10, id(font_small), TextAlign::TOP_CENTER, "↑");
+              it.printf(64, 38, id(font_small), TextAlign::TOP_CENTER, "↓");
+            } else {
+              it.printf(64, 48, id(font_small), TextAlign::TOP_CENTER, "Premi OK per selez.");
+            }
+
+            break;
+          }
+
+          case 5: {
+            it.printf(64, 20, id(font_small), TextAlign::TOP_CENTER, "System:");
+            it.printf(64, 35, id(font_small), TextAlign::TOP_CENTER, "Auto: %s", id(automatic_irrigation_enabled) ? "ON" : "OFF");
+            it.printf(64, 45, id(font_small), TextAlign::TOP_CENTER, "ETH: %s", id(ethernet_connected) ? "OK" : "NO");
+            break;
+          }
+        }
+        return;
+      }
+
+      // Standby screen
+      it.printf(0, 0, id(font_small), TextAlign::TOP_LEFT, "%s", "$devicename");
+      if (id(sntp_time).now().is_valid()) {
+        it.strftime(128, 0, id(font_small), TextAlign::TOP_RIGHT, "%H:%M", id(sntp_time).now());
+      }
+
+      it.printf(64, 16, id(font_small), TextAlign::TOP_CENTER, 
+        "V1:%s V2:%s V3:%s V4:%s",
+        id(valve_1).state ? "ON" : "OFF",
+        id(valve_2).state ? "ON" : "OFF",
+        id(valve_3).state ? "ON" : "OFF",
+        id(valve_4).state ? "ON" : "OFF");
+
+      it.printf(64, 30, id(font_small), TextAlign::TOP_CENTER, 
+        "V5:%s V6:%s V7:%s V8:%s",
+        id(valve_5).state ? "ON" : "OFF",
+        id(valve_6).state ? "ON" : "OFF",
+        id(valve_7).state ? "ON" : "OFF",
+        id(valve_8).state ? "ON" : "OFF");
+
+      it.printf(0, 54, id(font_small), TextAlign::BOTTOM_LEFT, "OK for menu");
+      it.printf(128, 54, id(font_small), TextAlign::BOTTOM_RIGHT, 
+        "%s", id(ethernet_connected) ? "ETH: OK" : "WIFI: OK");
