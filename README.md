@@ -67,7 +67,7 @@ Four independent schematic blocks:
 ## ⚙️ Firmware Features – `sprinklerboy.yaml`
 
 This **ESPHome-based** YAML configuration powers the SprinklerBoy smart irrigation controller, offering full integration with sensors, display, and networking.  
-> It has to be adapted to your needs.
+> The file given it's just an overall example, it have to be adapted to your needs.
 
 ---
 
