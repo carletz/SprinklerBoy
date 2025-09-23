@@ -54,6 +54,22 @@ Four independent schematic blocks:
 ![Render 2](Images/Power_board.png)
 
 ![Render 3](Images/Input_Board.png)
+
+![Render 4](Images/proto.png)
+
+![Render 5](Images/3dboard1.png)
+
+![Render 6](Images/3dboard2.png)
+
+![Render 3](Images/final.png)
+
+---
+
+---
+## 🎥 Construction Video
+
+[![Watch the video](https://img.youtube.com/vi/Xu3LNq0fTHU/0.jpg)](https://youtu.be/Xu3LNq0fTHU) 
+
 ---
 
 ## 🔧 Applications
