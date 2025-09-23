@@ -55,7 +55,7 @@ Four independent schematic blocks:
 
 ![Render 3](Images/Input_Board.png)
 
-![Render 4](Images/proto.png)
+![Render 4](Images/proto.jpg)
 
 ![Render 5](Images/3dboard1.png)
 
